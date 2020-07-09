@@ -11,11 +11,11 @@
                     </div>
                     <div class="form-group">
                         <label>Adet</label>
-                        <input v-model="product.count" type="text" class="form-control" placeholder="Ürün adetini giriniz..">
+                        <input v-model="product.count" type="number" class="form-control" placeholder="Ürün adetini giriniz..">
                     </div>
                     <div class="form-group">
                         <label>Fiyat</label>
-                        <input v-model="product.price" type="text" class="form-control" placeholder="Ürün fiyatı giriniz..">
+                        <input v-model="product.price" type="number" class="form-control" placeholder="Ürün fiyatı giriniz..">
                     </div>
                     <div class="form-group">
                         <label>Açıklama</label>
@@ -23,7 +23,7 @@
                                   class="form-control"></textarea>
                     </div>
                     <hr>
-                    <button v-on:click="saveProduct" class="btn btn-primary">Kaydet</button>
+                    <button v-on:click="saveProduct" class="btn btn-primary" :disabled="activePasive">Kaydet</button>
                 </div>
             </div>
         </div>
@@ -44,9 +44,43 @@
         methods:{
             saveProduct(){
                 this.$store.dispatch('saveProduct',this.product);
-                this.product={}
+                this.product={};
+                this.$router.replace('/');
             }
-        }
+        },
+        computed:{
+            activePasive(){
+                if(this.product.title!=null &&
+                    this.product.count!=null &&
+                    this.product.price!=null &&
+                    this.product.description!=null &&
+                    this.product.title.length>0 &&
+                    this.product.count.length>0 &&
+                    this.product.price.length>0 &&
+                    this.product.description.length>0)
+                    return false;
+                else
+                    return true;
+            }
+        },
+        // beforeRouteLeave(next){
+        //     if(this.product.title!=null ||
+        //         this.product.count!=null ||
+        //         this.product.price!=null ||
+        //         this.product.description!=null ||
+        //         this.product.title.length>0 ||
+        //         this.product.count.length>0 ||
+        //         this.product.price.length>0 ||
+        //         this.product.description.length>0){
+        //             if(confirm('Kaydedilmemiş veriler mevcut devam etmek ister misiniz ?'))
+        //                 next();
+        //             else
+        //                 next(false);
+        //         }
+        //
+        //
+        //
+        // }
 
     }
 </script>

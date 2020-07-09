@@ -7,12 +7,8 @@
                     <hr>
                     <div class="form-group">
                         <label>Ürün Adı</label>
-                        <select class="form-control">
-                            <option value="1">Ürün 1</option>
-                            <option value="1">Ürün 2</option>
-                            <option value="1">Ürün 3</option>
-                            <option value="1">Ürün 4</option>
-                            <option value="1">Ürün 5</option>
+                        <select class="form-control" @change="selectProduct($event)">
+                            <option v-for="product in getProducts" :key="product.key" :value="product.key" >{{product.title}}</option>
                         </select>
                     </div>
                     <div class="card mb-2 border border-danger">
@@ -20,13 +16,10 @@
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <div class="mb-3">
-                                        <span class="badge badge-info">Stok : 4</span>
-                                        <span class="badge badge-primary">Fiyat : 100,5 TL</span>
+                                        <span class="badge badge-info">Stok : {{selectedProduct.count}}</span>
+                                        <span class="badge badge-primary">Fiyat : {{selectedProduct.price | currency}}</span>
                                     </div>
-                                    <p class="border border-warning p-2 text-secondary">Lorem ipsum dolor sit amet, consectetur
-                                        adipisicing elit. Assumenda debitis deleniti eos impedit iste numquam quos sit.
-                                        Dignissimos, mollitia nemo officia reiciendis repellendus rerum velit. Eos libero magnam
-                                        quas tempore!</p>
+                                    <p class="border border-warning p-2 text-secondary">{{ selectedProduct.description }}</p>
                                 </div>
                             </div>
                         </div>
@@ -43,8 +36,27 @@
     </div>
 </template>
 <script>
+    import {mapGetters} from 'vuex';
     export default{
-
+        computed:{
+            ...mapGetters(['getProducts'])
+        },
+        data(){
+            return{
+                selectedProduct:{
+                    count:0,
+                    title:'',
+                    price:0,
+                    description:''
+                }
+            }
+        },
+        methods:{
+            selectProduct(event){
+                // TODO 1 selected product işlemini getter ile yapacaksın.
+                this.selectedProduct=this.getProducts.filter(v=>v.key==event.target.value)[0];
+            }
+        }
     }
 </script>
 <style scoped>

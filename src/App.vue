@@ -14,7 +14,12 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
+
+  created() {
+    return this.$store.dispatch('initApp');
+
+  },
 }
 </script>
 

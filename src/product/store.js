@@ -11,12 +11,12 @@ const state={
 
 const getterss={
     getProducts(state){
+
         return state.products;
 
     },
-    getProduct(state){
-        return state;
-
+    getProduct(state,product){
+        return state.products.filter(v=>v.key==product.key);
     }
 }
 
@@ -28,19 +28,36 @@ const mutationss={
 
 const actionss={
     initApp({commit}){
-        return commit;
+        // state.products=[];
+        Vue.http.get('https://productservice-88ba6.firebaseio.com/products.json')
+            .then(res=>{
+                    for(let key in res.body){
+                        res.body[key].key=key;
+                        commit('updateProductList',res.body[key]);
+                    }
+            });
     },
-    saveProduct({ commit }, product){
+    saveProduct({ dispatch,commit }, product){
             Vue.http.post('https://productservice-88ba6.firebaseio.com/products.json',product)
                 .then((response)=> {
-                    product.id=response.body.name;
-                    console.log(state.products);
+                    product.key=response.body.name;
+                    console.log(product);
                 })
                 .catch((err)=>console.log(err));
             commit('updateProductList',product);
+            let tradeResult={
+                purchase:product.price,
+                sale:0,
+                count:product.count
+            }
+            dispatch('setTradeResult',tradeResult);
+
     },
     sellProduct({commit},product){
             return commit,product;
+    },
+    deleteProduct(){
+
     }
 }
 

@@ -11,6 +11,10 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueResource);
 
+Vue.filter('currency',(value)=>{
+    return value+' TL';
+});
+
 
 const router=new VueRouter({
     'mode':'history',
