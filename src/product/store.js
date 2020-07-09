@@ -31,7 +31,13 @@ const actionss={
         return commit;
     },
     saveProduct({ commit }, product){
-            return commit,product;
+            Vue.http.post('https://productservice-88ba6.firebaseio.com/products.json',product)
+                .then((response)=> {
+                    product.id=response.body.name;
+                    console.log(state.products);
+                })
+                .catch((err)=>console.log(err));
+            commit('updateProductList',product);
     },
     sellProduct({commit},product){
             return commit,product;
@@ -46,7 +52,7 @@ const productmodule= {
 }
 
 Vue.use(Vuex);
-export const store=new Vuex.Store({
+export default new Vuex.Store({
     state:{
         purchase: 0.0,
         sale: 0.0,
