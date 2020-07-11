@@ -45,7 +45,9 @@
             saveProduct(){
                 this.$store.dispatch('saveProduct',this.product);
                 this.product={};
-                this.$router.replace('/');
+                setTimeout(()=>{
+                    this.$router.push('/');
+                },400);
             }
         },
         computed:{

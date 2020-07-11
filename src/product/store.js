@@ -53,8 +53,19 @@ const actionss={
             dispatch('setTradeResult',tradeResult);
 
     },
-    sellProduct({commit},product){
-            return commit,product;
+    sellProduct({state},payload){
+        Vue.http.patch('https://productservice-88ba6.firebaseio.com/products/'+payload.product.key+"/count",{
+            count:payload.product.count-payload.sellCount
+        })
+            .then(res=>{
+                console.log(res);
+                let p=state.products.filter(v=>{
+                    return v.key==payload.product.key
+                });
+                p.count=payload.product.count-payload.sellCount;
+            })
+            .catch(ex=>console.log(ex));
+
     },
     deleteProduct(){
 
